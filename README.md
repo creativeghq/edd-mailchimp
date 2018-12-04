@@ -1,0 +1,1 @@
+# EDD Mailchimp Abandoned Cart Wordpress Plugin (v 1.0.9) #

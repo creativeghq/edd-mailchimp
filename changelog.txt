@@ -1,0 +1,17 @@
+1.0.9 Supports multiple Payment Gateways
+
+1.0.8 Discount code ON/OFF and Delete plugin generated discount code features added
+
+1.0.7 General bugs fixed.
+
+1.0.6 MailChimp Order bugs fixed.
+
+1.0.5 MailChimp Order Data Implementation.
+
+1.0.4 Licensing bugs fixed.
+
+1.0.3 Settings page improved.
+
+1.0.2 Plugin Update and Site Connection bugs fixed
+
+1.0.1 Licensing system bugs fixed
