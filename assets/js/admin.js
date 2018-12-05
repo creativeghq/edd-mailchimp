@@ -11,6 +11,7 @@ jQuery(document).ready(function($){
         jQuery("select[name='edd_settings[edd_settings[edd_abandoned_mailchimp_merge_field_subscription_started_date_id]]']").html('<option value="false">Please wait..</option>');
         jQuery("select[name='edd_settings[edd_settings[edd_abandoned_mailchimp_merge_field_subscription_total_dates_id]]']").html('<option value="false">Please wait..</option>');
         jQuery("select[name='edd_settings[edd_settings[edd_abandoned_mailchimp_merge_field_subscription_status_id]]']").html('<option value="false">Please wait..</option>');
+        jQuery("select[name='edd_settings[edd_settings[edd_abandoned_mailchimp_merge_field_subscription_frequency_id]]']").html('<option value="false">Please wait..</option>');
         jQuery.ajax({
             url: abd_admin_script_object.ajax_url,
             data: {
@@ -292,6 +293,37 @@ jQuery(document).ready(function($){
             }
         }); 
     }
+    function update_merge_fields_subscription_frequency(mailChimpStoreId,mailChimpKey){
+        jQuery("select[name='edd_settings[edd_abandoned_mailchimp_merge_field_subscription_frequency_id]']").html('<option value="false">Please wait..</option>');
+        jQuery.ajax({
+            url: abd_admin_script_object.ajax_url,
+            data: {
+                    'action':'load_mailchimp_merge_fields',
+                    'mailChimpKey' : mailChimpKey,
+                    'mailChimpStoreId' : mailChimpStoreId,
+                },
+            dataType:'JSON',
+            type : 'post',
+            success:function(res) {
+                
+                var options = '';
+                if(res['data']){
+
+                    jQuery.each(res['data'], function(index, value ) {
+                        options += '<option value="'+index+'">'+value+'</option>';
+                    });
+                }  
+                jQuery("select[name='edd_settings[edd_abandoned_mailchimp_merge_field_subscription_total_dates_id]']").html(options);
+                // if(res.list_name){
+                //     var list_using = '<p><small>Selected Store use <b>'+res.list_name +'</b> List.</small></p>';
+                //     jQuery("select[name='edd_settings[edd_abandoned_mailchimp_store_id]']").parent().append(list_using);
+                // }
+            },
+            error: function(errorThrown){
+                // console.log(errorThrown);
+            }
+        }); 
+    }
 
     function update_merge_fields_subscription_status(mailChimpStoreId,mailChimpKey){
         jQuery("select[name='edd_settings[edd_abandoned_mailchimp_merge_field_subscription_status_id]']").html('<option value="false">Please wait..</option>');
@@ -338,6 +370,7 @@ jQuery(document).ready(function($){
         update_merge_fields_subscription_started(mailChimpStoreId,mailChimpKey);
         update_merge_fields_subscription_total(mailChimpStoreId,mailChimpKey);
         update_merge_fields_subscription_status(mailChimpStoreId,mailChimpKey);
+        update_merge_fields_subscription_frequency(mailChimpStoreId,mailChimpKey);
     });
 
 

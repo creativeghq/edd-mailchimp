@@ -577,9 +577,12 @@ if( !class_exists( 'EDD_Mailchimp_Abandoned_Cart' ) ) {
 
                 $subscription_started             = !empty( $edd_options['edd_abandoned_mailchimp_merge_field_subscription_started_date_id'] ) ? $edd_options['edd_abandoned_mailchimp_merge_field_subscription_started_date_id'] : '';
 
-                $total_dates             = !empty( $edd_options['edd_abandoned_mailchimp_merge_field_subscription_total_dates_id'] ) ? $edd_options['edd_abandoned_mailchimp_merge_field_subscription_total_dates_id'] : '';
-
+               
                 $subscription_status             = !empty( $edd_options['edd_abandoned_mailchimp_merge_field_subscription_status_id'] ) ? $edd_options['edd_abandoned_mailchimp_merge_field_subscription_status_id'] : '';
+
+                $subscription_frequency = !empty( $edd_options['edd_abandoned_mailchimp_merge_field_subscription_frequency_id'] ) ? $edd_options['edd_abandoned_mailchimp_merge_field_subscription_frequency_id'] : '';
+
+                $subscription_days = !empty( $edd_options['edd_abandoned_mailchimp_merge_field_subscription_total_dates_id'] ) ? $edd_options['edd_abandoned_mailchimp_merge_field_subscription_total_dates_id'] : '';
 
                 $merge_detail = $this->get_merge_field_detail($merge_id);
 
@@ -588,6 +591,9 @@ if( !class_exists( 'EDD_Mailchimp_Abandoned_Cart' ) ) {
                 $subscription_started_merge_detail = $this->get_merge_field_detail($subscription_started);
                 $total_dates_merge_detail = $this->get_merge_field_detail($total_dates); //?
                 $subscription_status_merge_detail = $this->get_merge_field_detail($subscription_status);
+                $subscription_frequency_merge_detail = $this->get_merge_field_detail($subscription_frequency);
+                $subscription_days_merge_detail = $this->get_merge_field_detail($subscription_days);
+                
                 
                 $tag = '';
                 
@@ -603,21 +609,43 @@ if( !class_exists( 'EDD_Mailchimp_Abandoned_Cart' ) ) {
 
                 $subscriber = new EDD_Recurring_Subscriber( $emailid );
                 $expiration = $subscriber->get_expiration();
-                if ($expiration) {
+                if ($subscription_expiring_merge_detail && $expiration) {
                     $merge_fields[$subscription_expiring_merge_detail['tag']] = $expiration;
                 }
                 $subs_start = $subscriber->date_created;
-                if ($subs_start) {
+                if ($subscription_started_merge_detail && $subs_start) {
                     $merge_fields[$subscription_started_merge_detail['tag']] = $subs_start;
                 }
                 $subs_total_spend = $subscriber->get_total_payments();
-                if ($subs_total_spend) {
-                    $merge_fields[$subscription_started_merge_detail['tag']] = $subs_start;   
+                if ($total_spend_merge_detail && $subs_total_spend) {
+                    $merge_fields[$total_spend_merge_detail['tag']] = $subs_total_spend;   
                 }
 
                 $subs_status = $subscriber->get_status();
-                if ($subs_status) {
-                   $merge_fields[$total_spend_merge_detail['tag']] = $subs_status; 
+                if ($subscription_status_merge_detail && $subs_status) {
+                   $merge_fields[$subscription_status_merge_detail['tag']] = $subs_status; 
+                }
+
+                $subs_frequency = $subscriber->period;
+                if ($subscription_frequency_merge_detail && $subs_frequency) {
+                   $merge_fields[$subscription_frequency_merge_detail['tag']] = $subs_frequency; 
+                }
+
+                //calculation subs_days
+                $current_date = time();
+                $subs_start_date = strtotime($subs_start);
+                $subs_expiry_date = strtotime($expiration);
+                if ($current_date < $subs_expiry_date) {
+                    $total_days = $current_date - $subs_start_date;
+
+                } else {
+                    $total_days = $subs_expiry_date - $subs_start_date;
+                }
+
+
+                $subscription_days = $total_days;
+                if ($subscription_days_merge_detail && $subscription_days) {
+                   $merge_fields[$subscription_days_merge_detail['tag']] = $subscription_days/86400; 
                 }
 
                 if (!empty( $apikey ) && !empty( $list_id )) {

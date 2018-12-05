@@ -143,8 +143,16 @@ function edd_mailchimp_abd_add_settings( $settings ) {
 				),
 				array(
 					'id'      => 'edd_abandoned_mailchimp_merge_field_subscription_total_dates_id',
-					'name'    => __( 'Choose a Merge Field to store Subscription Total Dates', 'edd-mailchimp-abandoned-cart' ),
-					'desc' => __( 'Subscription Total Dates . Go to your List Page in Mailchimp, Settings, and add/edit your List fields and *|MERGE|* tags as needed. <a class="" href="https://kb.mailchimp.com/lists/manage-contacts/manage-list-and-signup-form-fields" target="_blank">MailChimp Doc</a>', 'edd-mailchimp-abandoned-cart' ),
+					'name'    => __( 'Choose a Merge Field to store Subscription Total Days', 'edd-mailchimp-abandoned-cart' ),
+					'desc' => __( 'Subscription Total Days . Go to your List Page in Mailchimp, Settings, and add/edit your List fields and *|MERGE|* tags as needed. <a class="" href="https://kb.mailchimp.com/lists/manage-contacts/manage-list-and-signup-form-fields" target="_blank">MailChimp Doc</a>', 'edd-mailchimp-abandoned-cart' ),
+					'type'    => 'select',
+					'class'   => 'edd_abandoned_mailchimp_merge_field_id',
+					'options' => $mergeFields
+				),
+				array(
+					'id'      => 'edd_abandoned_mailchimp_merge_field_subscription_frequency_id',
+					'name'    => __( 'Choose a Merge Field to store Subscription Frequency', 'edd-mailchimp-abandoned-cart' ),
+					'desc' => __( 'Subscription Frequency . Go to your List Page in Mailchimp, Settings, and add/edit your List fields and *|MERGE|* tags as needed. <a class="" href="https://kb.mailchimp.com/lists/manage-contacts/manage-list-and-signup-form-fields" target="_blank">MailChimp Doc</a>', 'edd-mailchimp-abandoned-cart' ),
 					'type'    => 'select',
 					'class'   => 'edd_abandoned_mailchimp_merge_field_id',
 					'options' => $mergeFields
